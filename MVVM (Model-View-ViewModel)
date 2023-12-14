@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+// Model
+class Model {
+public:
+    std::string GetData() const {
+        return data;
+    }
+
+    void SetData(const std::string& newData) {
+        data = newData;
+    }
+
+private:
+    std::string data;
+};
+
+// ViewModel
+class ViewModel {
+public:
+    ViewModel(Model& model) : model(model) {}
+
+    void SetViewData(const std::string& newData) {
+        model.SetData(newData);
+        // Можна викликати подію або оновити інші елементи, пов'язані з ViewModel
+    }
+
+    std::string GetViewData() const {
+        return model.GetData();
+    }
+
+private:
+    Model& model;
+};
+
+// View (спрощено - текстовий вивід у консоль)
+class View {
+public:
+    void Render(const std::string& data) {
+        std::cout << "View Rendering: " << data << std::endl;
+    }
+};
+
+int main() {
+    Model model;
+    ViewModel viewModel(model);
+    View view;
+
+    // Маніпуляції з даними через ViewModel
+    viewModel.SetViewData("Hello, MVVM!");
+
+    // Отримання та відображення даних з ViewModel
+    std::string dataFromViewModel = viewModel.GetViewData();
+    view.Render(dataFromViewModel);
+
+    return 0;
+}
